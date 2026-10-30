@@ -17,7 +17,7 @@ public class Card {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private CardBrand cardBrand;
+    private CardBrand brand;
     private LocalDateTime registrationDate;
 
     @PrePersist

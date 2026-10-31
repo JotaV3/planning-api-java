@@ -3,6 +3,7 @@ package io.github.jotav3.planning_api.entities.controllers;
 import io.github.jotav3.planning_api.entities.dto.CardRequestDTO;
 import io.github.jotav3.planning_api.entities.dto.CardResponseDTO;
 import io.github.jotav3.planning_api.entities.services.CardService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class CardController {
     private CardService service;
 
     @PostMapping
-    public ResponseEntity<CardResponseDTO> create(@RequestBody CardRequestDTO requestDTO){
+    public ResponseEntity<CardResponseDTO> create(@RequestBody @Valid CardRequestDTO requestDTO){
         CardResponseDTO responseDTO = service.create(requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);

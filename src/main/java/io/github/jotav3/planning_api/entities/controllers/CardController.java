@@ -31,4 +31,11 @@ public class CardController {
 
         return ResponseEntity.ok().body(dto);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CardResponseDTO> update(@PathVariable UUID id, @RequestBody @Valid CardRequestDTO requestDTO){
+        CardResponseDTO responseDTO = service.update(id, requestDTO);
+
+        return ResponseEntity.ok().body(responseDTO);
+    }
 }

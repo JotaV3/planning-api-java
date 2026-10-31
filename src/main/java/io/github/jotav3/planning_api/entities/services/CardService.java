@@ -10,6 +10,7 @@ import io.github.jotav3.planning_api.entities.repositories.CardRepository;
 import io.github.jotav3.planning_api.entities.validation.CardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -42,5 +43,15 @@ public class CardService {
         return repository.findById(id)
                 .map(mapper::toCardResponseDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+    }
+
+    @Transactional
+    public CardResponseDTO update(UUID id, CardRequestDTO dto){
+        Card card = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+
+        mapper.update(card, dto);
+
+        return mapper.toCardResponseDTO(card);
     }
 }

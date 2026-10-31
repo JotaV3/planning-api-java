@@ -1,5 +1,6 @@
 package io.github.jotav3.planning_api.entities.controllers.handlers;
 
+import io.github.jotav3.planning_api.entities.exceptions.ResourceNotFoundException;
 import io.github.jotav3.planning_api.entities.exceptions.ValidationException;
 import io.github.jotav3.planning_api.entities.validation.InvalidField;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,20 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<StandardError> handleResourceNotFoundException(ResourceNotFoundException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        StandardError standardError = new StandardError(
+                Instant.now(),
+                status.value(),
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(status).body(standardError);
+    }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<FieldError> handleValidationException(ValidationException e, HttpServletRequest request){

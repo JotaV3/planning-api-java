@@ -21,7 +21,7 @@ public class ValidationResult {
         invalidFieldList.add(invalidField);
     }
 
-    public boolean isValid(){
-        return invalidFieldList.isEmpty();
+    public boolean isInvalid(){
+        return !invalidFieldList.isEmpty();
     }
 }

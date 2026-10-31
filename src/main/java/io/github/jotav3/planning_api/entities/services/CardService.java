@@ -27,9 +27,9 @@ public class CardService {
     private CardValidator validator;
 
     public CardResponseDTO create(CardRequestDTO dto){
-        var result = validator.validateName(dto);
+        var result = validator.validateName(dto, null);
 
-        if(!result.isValid()){
+        if(result.isInvalid()){
             throw new ValidationException(result.getInvalidFieldList());
         }
 
@@ -49,6 +49,12 @@ public class CardService {
     public CardResponseDTO update(UUID id, CardRequestDTO dto){
         Card card = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+
+        var result = validator.validateName(dto, id);
+
+        if(result.isInvalid()){
+            throw new ValidationException(result.getInvalidFieldList());
+        }
 
         mapper.update(card, dto);
 

@@ -10,6 +10,8 @@ import io.github.jotav3.planning_api.entities.validation.CardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class CardService {
 
@@ -33,5 +35,11 @@ public class CardService {
         repository.save(card);
 
         return mapper.toCardResponseDTO(card);
+    }
+
+    public CardResponseDTO findById(UUID id){
+        return repository.findById(id)
+                .map(mapper::toCardResponseDTO)
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

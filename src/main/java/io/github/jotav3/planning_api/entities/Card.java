@@ -20,6 +20,17 @@ public class Card {
     private CardBrand brand;
     private LocalDateTime registrationDate;
 
+    public Card(){
+
+    }
+
+    public Card(UUID id, String name, CardBrand brand, LocalDateTime registrationDate) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.registrationDate = registrationDate;
+    }
+
     @PrePersist
     private void prePersist(){
         setRegistrationDate(LocalDateTime.now());

@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -52,6 +53,29 @@ public class CardControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.name").value("VisaCard"))
+                .andExpect(jsonPath("$.brand").value("VISA"))
+                .andExpect(jsonPath("$.registrationDate").isNotEmpty());
+    }
+
+    @Test
+    public void shouldUpdateCard() throws Exception{
+        CardResponseDTO card = createCard();
+
+        String json = """
+                {
+                    "name": "VisaCardUpdated",
+                    "brand": "VISA"
+                }
+                """;
+
+        ResultActions result = mockMvc.perform(put("/cards/{id}", card.id())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json));
+
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(card.id()))
+                .andExpect(jsonPath("$.name").value("VisaCardUpdated"))
                 .andExpect(jsonPath("$.brand").value("VISA"))
                 .andExpect(jsonPath("$.registrationDate").isNotEmpty());
     }

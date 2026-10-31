@@ -14,15 +14,13 @@ public class FieldError {
     private Instant timestamp;
     private Integer status;
     private String error;
-    private String message;
     private String path;
     private List<InvalidField> invalidFieldList;
 
-    public FieldError(Instant timestamp, Integer status, String error, String message, String path, List<InvalidField> invalidFieldList) {
+    public FieldError(Instant timestamp, Integer status, String error, String path, List<InvalidField> invalidFieldList) {
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
-        this.message = message;
         this.path = path;
         this.invalidFieldList = invalidFieldList;
     }

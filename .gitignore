@@ -1,34 +1,113 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
+# ========================================
+# BACKEND - JAVA / SPRING BOOT / MAVEN
+# ========================================
+
+planning-api/HELP.md
+planning-api/target/
+planning-api/.mvn/wrapper/maven-wrapper.jar
+
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-data/
+### STS ###
+
+planning-api/.apt_generated/
+planning-api/.classpath
+planning-api/.factorypath
+planning-api/.project
+planning-api/.settings/
+planning-api/.springBeans
+planning-api/.sts4-cache/
+
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
+
+planning-api/nbproject/private/
+planning-api/nbbuild/
+planning-api/dist/
+planning-api/nbdist/
+planning-api/.nb-gradle/
+planning-api/build/
+
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+
+### Backend Data ###
+
+planning-api/data/
+
+
+# ========================================
+# FRONTEND - ANGULAR / NODE
+# ========================================
+
+### Angular ###
+
+planning-app/dist/
+planning-app/tmp/
+planning-app/out-tsc/
+planning-app/bazel-out/
+planning-app/.angular/
+planning-app/coverage/
+planning-app/typings/
+planning-app/__screenshots__/
+
+
+### Node ###
+
+planning-app/node_modules/
+planning-app/npm-debug.log*
+planning-app/yarn-debug.log*
+planning-app/yarn-error.log*
+planning-app/pnpm-debug.log*
+planning-app/testem.log
+
+
+### Miscellaneous ###
+
+planning-app/.sass-cache/
+planning-app/connect.lock
+planning-app/libpeerconnection.log
+
+
+# ========================================
+# IDEs AND EDITORS
+# ========================================
+
+### IntelliJ IDEA ###
+
+.idea/
+*.iws
+*.iml
+*.ipr
+
+
+### Eclipse / STS ###
+
+.project
+.classpath
+.factorypath
+.settings/
+
+
 ### VS Code ###
+
 .vscode/
+.history/
+
+
+### Other Editors ###
+
+.c9/
+*.launch
+*.sublime-workspace
+
+
+# ========================================
+# OPERATING SYSTEM
+# ========================================
+
+.DS_Store
+Thumbs.db

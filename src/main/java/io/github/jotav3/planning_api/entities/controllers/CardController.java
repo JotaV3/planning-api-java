@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/cards")
+@CrossOrigin("*")
 public class CardController {
 
     @Autowired

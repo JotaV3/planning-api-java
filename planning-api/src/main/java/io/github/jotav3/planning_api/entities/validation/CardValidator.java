@@ -18,7 +18,7 @@ public class CardValidator {
 
         boolean isListNotEmpty = !repository.findByNameAndNotId(dto.name(), id).isEmpty();
         if(isListNotEmpty){
-            result.add(new InvalidField("name", "already registered"));
+            result.add(new InvalidField("name", "Already registered."));
         }
 
         return result;

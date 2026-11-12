@@ -1,7 +1,7 @@
 package io.github.jotav3.planning_api.services;
 
 import io.github.jotav3.planning_api.entities.Card;
-import io.github.jotav3.planning_api.entities.dto.CardRequestDTO;
+import io.github.jotav3.planning_api.entities.dto.requests.CardRequestDTO;
 import io.github.jotav3.planning_api.entities.enums.CardBrand;
 import io.github.jotav3.planning_api.entities.exceptions.ResourceNotFoundException;
 import io.github.jotav3.planning_api.entities.exceptions.ValidationException;

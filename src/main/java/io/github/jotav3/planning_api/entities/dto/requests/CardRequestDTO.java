@@ -1,4 +1,4 @@
-package io.github.jotav3.planning_api.entities.dto;
+package io.github.jotav3.planning_api.entities.dto.requests;
 
 import io.github.jotav3.planning_api.entities.enums.CardBrand;
 import jakarta.validation.constraints.NotBlank;

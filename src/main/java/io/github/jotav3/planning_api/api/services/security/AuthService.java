@@ -1,8 +1,10 @@
 package io.github.jotav3.planning_api.api.services.security;
 
 import io.github.jotav3.planning_api.api.User;
+import io.github.jotav3.planning_api.api.dto.requests.LoginRequestDTO;
 import io.github.jotav3.planning_api.api.dto.requests.UserRequestDTO;
 import io.github.jotav3.planning_api.api.dto.responses.AuthResponseDTO;
+import io.github.jotav3.planning_api.api.services.exceptions.UnauthorizedException;
 import io.github.jotav3.planning_api.api.services.exceptions.ValidationException;
 import io.github.jotav3.planning_api.api.mappers.UserMapper;
 import io.github.jotav3.planning_api.api.repositories.UserRepository;
@@ -41,6 +43,20 @@ public class AuthService {
         user.setPassword(encryptedPassword);
 
         userRepository.save(user);
+
+        return toAuthResponseDTO(user);
+    }
+
+    public AuthResponseDTO authenticateUser(LoginRequestDTO dto){
+        String message = "Login or password invalid.";
+
+        User user = userRepository.findByLogin(dto.login())
+                .orElseThrow(() -> new UnauthorizedException(message));
+
+        boolean isPasswordInvalid = !encoder.matches(dto.password(), user.getPassword());
+        if(isPasswordInvalid){
+            throw new UnauthorizedException(message);
+        }
 
         return toAuthResponseDTO(user);
     }

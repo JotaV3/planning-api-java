@@ -6,6 +6,7 @@ import io.github.jotav3.planning_api.entities.dto.responses.AuthResponseDTO;
 import io.github.jotav3.planning_api.entities.exceptions.ValidationException;
 import io.github.jotav3.planning_api.entities.mappers.UserMapper;
 import io.github.jotav3.planning_api.entities.repositories.UserRepository;
+import io.github.jotav3.planning_api.entities.services.security.JWTService;
 import io.github.jotav3.planning_api.entities.validation.InvalidField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +24,9 @@ public class AuthService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private JWTService jwtService;
 
     public AuthResponseDTO registerUser(UserRequestDTO dto){
         if(userRepository.existsByLogin(dto.login())){
@@ -43,10 +47,13 @@ public class AuthService {
     }
 
     private AuthResponseDTO toAuthResponseDTO(User user){
+        String token = jwtService.generateToken(user);
+        long expiresAt = jwtService.getExpirationSeconds();
+
         return new AuthResponseDTO(
-                null,
+                token,
                 "Bearer",
-                0,
+                expiresAt,
                 user.getName()
         );
     }

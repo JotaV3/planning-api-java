@@ -1,10 +1,10 @@
 package io.github.jotav3.planning_api.controllers;
 
-import io.github.jotav3.planning_api.entities.Card;
-import io.github.jotav3.planning_api.entities.dto.responses.CardResponseDTO;
-import io.github.jotav3.planning_api.entities.enums.CardBrand;
-import io.github.jotav3.planning_api.entities.mappers.CardMapper;
-import io.github.jotav3.planning_api.entities.repositories.CardRepository;
+import io.github.jotav3.planning_api.api.Card;
+import io.github.jotav3.planning_api.api.dto.responses.CardResponseDTO;
+import io.github.jotav3.planning_api.api.enums.CardBrand;
+import io.github.jotav3.planning_api.api.mappers.CardMapper;
+import io.github.jotav3.planning_api.api.repositories.CardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

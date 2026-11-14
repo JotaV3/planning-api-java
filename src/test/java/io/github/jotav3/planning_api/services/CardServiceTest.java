@@ -1,12 +1,12 @@
 package io.github.jotav3.planning_api.services;
 
-import io.github.jotav3.planning_api.entities.Card;
-import io.github.jotav3.planning_api.entities.dto.requests.CardRequestDTO;
-import io.github.jotav3.planning_api.entities.enums.CardBrand;
-import io.github.jotav3.planning_api.entities.exceptions.ResourceNotFoundException;
-import io.github.jotav3.planning_api.entities.exceptions.ValidationException;
-import io.github.jotav3.planning_api.entities.repositories.CardRepository;
-import io.github.jotav3.planning_api.entities.services.CardService;
+import io.github.jotav3.planning_api.api.Card;
+import io.github.jotav3.planning_api.api.dto.requests.CardRequestDTO;
+import io.github.jotav3.planning_api.api.enums.CardBrand;
+import io.github.jotav3.planning_api.api.services.exceptions.ResourceNotFoundException;
+import io.github.jotav3.planning_api.api.services.exceptions.ValidationException;
+import io.github.jotav3.planning_api.api.repositories.CardRepository;
+import io.github.jotav3.planning_api.api.services.CardService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

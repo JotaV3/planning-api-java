@@ -1,6 +1,7 @@
 package io.github.jotav3.planning_api.entities.services.security;
 
 import io.github.jotav3.planning_api.entities.User;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,11 @@ public class JWTService {
     @Value("${app.jwt.secret}")
     private String secret;
 
+    @Getter
     @Value("${app.jwt.expiration-seconds}")
     private long expirationSeconds;
+
+    // PUBLIC
 
     public String generateToken(User user){
         String header = generateHeader();
@@ -28,6 +32,8 @@ public class JWTService {
 
         return header + "." + payload + "." + signature;
     }
+
+    // PRIVATE
 
     private String generateSignature(String header, String payload){
         String content = header + "." + payload;

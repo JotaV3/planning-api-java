@@ -25,7 +25,6 @@ public class ControllerExceptionHandler {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
 
         StandardError standardError = new StandardError(
-                Instant.now(),
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI()
@@ -42,7 +41,6 @@ public class ControllerExceptionHandler {
         HttpStatus status = HttpStatus.NOT_FOUND;
 
         StandardError standardError = new StandardError(
-                Instant.now(),
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI()
@@ -59,7 +57,6 @@ public class ControllerExceptionHandler {
         HttpStatus status = HttpStatus.UNPROCESSABLE_CONTENT;
 
         FieldError fieldError = new FieldError(
-                Instant.now(),
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI(),
@@ -82,7 +79,6 @@ public class ControllerExceptionHandler {
                 .toList();
 
         FieldError fieldError = new FieldError(
-                Instant.now(),
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI(),

@@ -17,8 +17,8 @@ public class FieldError {
     private String path;
     private List<InvalidField> invalidFieldList;
 
-    public FieldError(Instant timestamp, Integer status, String error, String path, List<InvalidField> invalidFieldList) {
-        this.timestamp = timestamp;
+    public FieldError(Integer status, String error, String path, List<InvalidField> invalidFieldList) {
+        this.timestamp = Instant.now();
         this.status = status;
         this.error = error;
         this.path = path;

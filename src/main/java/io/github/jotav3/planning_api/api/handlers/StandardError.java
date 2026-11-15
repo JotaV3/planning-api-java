@@ -12,8 +12,8 @@ public class StandardError {
     private String error;
     private String path;
 
-    public StandardError(Instant timestamp, Integer status, String error, String path) {
-        this.timestamp = timestamp;
+    public StandardError(Integer status, String error, String path) {
+        this.timestamp = Instant.now();
         this.status = status;
         this.error = error;
         this.path = path;

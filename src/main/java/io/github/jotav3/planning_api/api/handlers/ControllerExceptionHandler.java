@@ -1,6 +1,7 @@
 package io.github.jotav3.planning_api.api.handlers;
 
 import io.github.jotav3.planning_api.application.services.exceptions.ResourceNotFoundException;
+import io.github.jotav3.planning_api.application.services.exceptions.UnauthorizedException;
 import io.github.jotav3.planning_api.application.services.exceptions.ValidationException;
 import io.github.jotav3.planning_api.application.services.validation.InvalidField;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,8 +17,28 @@ import java.util.List;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<StandardError> handleUnauthorizedException(
+            UnauthorizedException e,
+            HttpServletRequest request)
+    {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+
+        StandardError standardError = new StandardError(
+                Instant.now(),
+                status.value(),
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(status).body(standardError);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<StandardError> handleResourceNotFoundException(ResourceNotFoundException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> handleResourceNotFoundException(
+            ResourceNotFoundException e,
+            HttpServletRequest request)
+    {
         HttpStatus status = HttpStatus.NOT_FOUND;
 
         StandardError standardError = new StandardError(
@@ -31,7 +52,10 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<FieldError> handleValidationException(ValidationException e, HttpServletRequest request){
+    public ResponseEntity<FieldError> handleValidationException(
+            ValidationException e,
+            HttpServletRequest request)
+    {
         HttpStatus status = HttpStatus.UNPROCESSABLE_CONTENT;
 
         FieldError fieldError = new FieldError(
@@ -46,7 +70,10 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<FieldError> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request){
+    public ResponseEntity<FieldError> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException e,
+            HttpServletRequest request)
+    {
         HttpStatus status = HttpStatus.UNPROCESSABLE_CONTENT;
 
         List<InvalidField> invalidFieldList = e.getFieldErrors()

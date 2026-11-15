@@ -1,8 +1,8 @@
 package io.github.jotav3.planning_api.api.controllers;
 
-import io.github.jotav3.planning_api.api.dto.requests.CardRequestDTO;
-import io.github.jotav3.planning_api.api.dto.responses.CardResponseDTO;
-import io.github.jotav3.planning_api.api.services.CardService;
+import io.github.jotav3.planning_api.api.dtos.requests.CardRequestDTO;
+import io.github.jotav3.planning_api.api.dtos.responses.CardResponseDTO;
+import io.github.jotav3.planning_api.application.services.CardService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

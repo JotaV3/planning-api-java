@@ -17,15 +17,15 @@ public class AuthController {
     @Autowired
     AuthService service;
 
-    @PostMapping("/signup")
-    public ResponseEntity<AuthResponseDTO> signup(@Valid @RequestBody UserRequestDTO dto){
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody UserRequestDTO dto){
         AuthResponseDTO authResponseDTO = service.registerUser(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(authResponseDTO);
     }
 
-    @PostMapping("/signing")
-    public AuthResponseDTO signing(@Valid @RequestBody LoginRequestDTO dto){
+    @PostMapping("/login")
+    public AuthResponseDTO login(@Valid @RequestBody LoginRequestDTO dto){
         return service.authenticateUser(dto);
     }
 }

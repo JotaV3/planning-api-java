@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -28,9 +29,15 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // authorize POST in these routes ("/auth/register", "auth/login"), other routes are protected
+                // configure header
+                .headers(headers ->
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                )
+
+                // authorize POST in these routes ("/auth/register", "auth/login")
                 .authorizeHttpRequests(authorize ->
                         authorize
+                                .requestMatchers("/h2-console/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
                                 .anyRequest().authenticated()
                 )

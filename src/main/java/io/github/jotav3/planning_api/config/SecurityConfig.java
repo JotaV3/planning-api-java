@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,11 +27,17 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
+                // authorize POST in these routes ("/auth/register", "auth/login"), other routes are protected
                 .authorizeHttpRequests(authorize ->
-                        // authorize POST in these routes ("/auth/register", "auth/login"), other routes are protected
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()
                                 .anyRequest().authenticated()
+                )
+
+                // protect API with JWT as OAuth2 Resource Server
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(Customizer.withDefaults())
                 );
 
         return http.build();

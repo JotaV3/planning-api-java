@@ -39,8 +39,6 @@ public class CardService {
         }
 
         Card card = mapper.toEntity(dto);
-        card.setUser(getUserByUserId(userId)); // get user and set it to card
-
         repository.save(card);
 
         return mapper.toCardResponseDTO(card);
@@ -54,15 +52,18 @@ public class CardService {
 
     @Transactional
     public CardResponseDTO update(UUID id, CardRequestDTO dto, UUID userId){
+
+        // find the card referenced by the "id" that will be to be updated
         Card card = repository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
 
+        // if card name already exists throws ValidationException
         var result = validator.validateName(dto, id, userId);
-
         if(result.isInvalid()){
             throw new ValidationException(result.getInvalidFieldList());
         }
 
+        // "card" refers to the existing card, while "dto" represents the data to be replaced.
         mapper.update(card, dto);
 
         return mapper.toCardResponseDTO(card);

@@ -41,8 +41,8 @@ public class CardServiceTest {
     @Test
     @Transactional
     public void shouldThrowValidationExceptionWhenCardNameExists(){
-        // original card
-        Card card = createCard();
+        User user = createUser();
+        Card card = createCard(user); // original card
         repository.save(card);
 
         // other card gets the same name of the original card
@@ -54,13 +54,13 @@ public class CardServiceTest {
 
     @Test
     public void shouldThrowResourceNotFoundException(){
-        Card card = createCard();
+        User user = createUser();
 
         // non-existent Card ID
         UUID id = UUID.randomUUID();
 
         assertThrows(ResourceNotFoundException.class, () ->
-                service.findByIdAndUserId(id, card.getUser().getId()));
+                service.findByIdAndUserId(id, user.getId()));
     }
 
     private User createUser(){
@@ -75,10 +75,8 @@ public class CardServiceTest {
         return userRepository.save(userMapper.toEntity(dto));
     }
 
-    private Card createCard(){
+    private Card createCard(User user){
         String name = "MyCard" + UUID.randomUUID();
-
-        User user = createUser();
 
         return new Card(
                 null,

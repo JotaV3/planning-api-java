@@ -23,8 +23,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -100,6 +99,21 @@ public class CardControllerTest {
                 .andExpect(jsonPath("$.name").value("VisaCardUpdated"))
                 .andExpect(jsonPath("$.brand").value("VISA"))
                 .andExpect(jsonPath("$.registrationDate").isNotEmpty());
+    }
+
+    @Test
+    public void shouldReturn401WhenTokenIsMissing() throws Exception{
+        // GET
+        mockMvc.perform(get("/cards/{id}", UUID.randomUUID()))
+                .andExpect(status().isUnauthorized());
+
+        // POST
+        mockMvc.perform(post("/cards"))
+                .andExpect(status().isUnauthorized());
+
+        // PUT
+        mockMvc.perform(put("/cards"))
+                .andExpect(status().isUnauthorized());
     }
 
     private User createUser(){

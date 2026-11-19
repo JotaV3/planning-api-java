@@ -109,7 +109,7 @@ public class CardControllerTest {
                 .andExpect(status().isUnauthorized());
 
         // PUT
-        mockMvc.perform(put("/cards"))
+        mockMvc.perform(put("/cards/{id}", UUID.randomUUID()))
                 .andExpect(status().isUnauthorized());
     }
 

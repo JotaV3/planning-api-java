@@ -99,6 +99,29 @@ public class CardControllerTest {
     }
 
     @Test
+    public void shouldReturnCard() throws Exception{
+        // create a user with a card and a token associated with them
+        User user = createUser();
+        String token = jwtService.generateToken(user);
+        Card card = createCard(user);
+
+        ResultActions result = mockMvc
+                .perform(get("/cards/{id}", card.getId())
+                        .header(AUTHORIZATION, "Bearer " + token)
+                );
+
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(card.getId().toString()))
+                .andExpect(jsonPath("$.name").value(card.getName()))
+                .andExpect(jsonPath("$.brand").value(card.getBrand().toString()))
+                .andExpect(jsonPath("$.registrationDate").isNotEmpty())
+                .andExpect(jsonPath("$.user.id").value(card.getUser().getId().toString()))
+                .andExpect(jsonPath("$.user.name").value(card.getUser().getName()))
+                .andExpect(jsonPath("$.user.login").value(card.getUser().getLogin()));
+    }
+
+    @Test
     public void shouldReturn401WhenTokenIsMissing() throws Exception{
         // GET
         mockMvc.perform(get("/cards/{id}", UUID.randomUUID()))

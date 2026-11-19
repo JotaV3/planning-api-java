@@ -54,7 +54,7 @@ public class CardService {
 
     @Transactional
     public CardResponseDTO update(UUID id, CardRequestDTO dto, UUID userId){
-        Card card = repository.findById(id)
+        Card card = repository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
 
         var result = validator.validateName(dto, id, userId);

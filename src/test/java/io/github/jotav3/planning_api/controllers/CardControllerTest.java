@@ -56,10 +56,11 @@ public class CardControllerTest {
                 }
                 """;
 
-        ResultActions result = mockMvc.perform(post("/cards")
-                .header(AUTHORIZATION, "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json));
+        ResultActions result = mockMvc
+                .perform(post("/cards")
+                        .header(AUTHORIZATION, "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json));
 
         result
                 .andExpect(status().isCreated())
@@ -83,10 +84,11 @@ public class CardControllerTest {
                 }
                 """;
 
-        ResultActions result = mockMvc.perform(put("/cards/{id}", card.getId())
-                .header(AUTHORIZATION, "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json));
+        ResultActions result = mockMvc
+                .perform(put("/cards/{id}", card.getId())
+                        .header(AUTHORIZATION, "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json));
 
         result
                 .andExpect(status().isOk())

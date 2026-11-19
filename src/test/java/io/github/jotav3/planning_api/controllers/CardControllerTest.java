@@ -138,6 +138,23 @@ public class CardControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void shouldNotAllowFindOtherUserCard() throws Exception{
+        User user = createUser(); // user
+        String token = jwtService.generateToken(user); // token owned by "user"
+
+        User otherUser = createUser(); // otherUser
+        Card otherUserCard = createCard(otherUser); // card owned by "otherUser"
+
+        ResultActions result = mockMvc
+                .perform(get("/cards/{id}", otherUserCard.getId()) // pass the card ID of the "otherUser"
+                        .header(AUTHORIZATION, "Bearer " + token) // pass the token of "user"
+                );
+
+        result
+                .andExpect(status().isNotFound());
+    }
+
     private User createUser(){
         String login = "MyLogin" + UUID.randomUUID();
 

@@ -1,5 +1,6 @@
 package io.github.jotav3.planning_api.controllers;
 
+import io.github.jotav3.planning_api.api.dtos.requests.CardRequestDTO;
 import io.github.jotav3.planning_api.api.dtos.requests.UserRequestDTO;
 import io.github.jotav3.planning_api.api.mappers.UserMapper;
 import io.github.jotav3.planning_api.application.services.security.JWTService;
@@ -114,6 +115,33 @@ public class CardControllerTest {
         // PUT
         mockMvc.perform(put("/cards"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldNotUpdateOtherUserCard() throws Exception{
+        User user = createUser(); // user
+        String token = jwtService.generateToken(user); // token owned by "user"
+
+        User otherUser = createUser(); // otherUser
+        CardResponseDTO otherUserCard = createCard(otherUser); // card owned by "otherUser"
+
+        String json = """
+                {
+                    "name": "MyCardUpdated",
+                    "brand": "VISA"
+                }
+                """;
+
+        // it should not allow a user to update another user's card
+        ResultActions result = mockMvc
+                .perform(put("/cards/{id}", otherUserCard.id()) // pass the card ID of the "otherUser"
+                        .header(AUTHORIZATION, "Bearer " + token) // pass the token of "user"
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                );
+
+        result
+                .andExpect(status().isNotFound());
     }
 
     private User createUser(){

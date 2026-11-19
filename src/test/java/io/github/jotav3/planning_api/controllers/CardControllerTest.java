@@ -1,15 +1,12 @@
 package io.github.jotav3.planning_api.controllers;
 
-import io.github.jotav3.planning_api.api.dtos.requests.CardRequestDTO;
 import io.github.jotav3.planning_api.api.dtos.requests.UserRequestDTO;
 import io.github.jotav3.planning_api.api.mappers.UserMapper;
 import io.github.jotav3.planning_api.application.services.security.JWTService;
 import io.github.jotav3.planning_api.infra.repositories.UserRepository;
 import io.github.jotav3.planning_api.model.entities.Card;
-import io.github.jotav3.planning_api.api.dtos.responses.CardResponseDTO;
 import io.github.jotav3.planning_api.model.entities.User;
 import io.github.jotav3.planning_api.model.entities.enums.CardBrand;
-import io.github.jotav3.planning_api.api.mappers.CardMapper;
 import io.github.jotav3.planning_api.infra.repositories.CardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +34,6 @@ public class CardControllerTest {
 
     @Autowired
     private CardRepository repository;
-
-    @Autowired
-    private CardMapper mapper;
 
     @Autowired
     private UserRepository userRepository;
@@ -80,7 +74,7 @@ public class CardControllerTest {
         User user = createUser();
         String token = jwtService.generateToken(user);
 
-        CardResponseDTO card = createCard(user);
+        Card card = createCard(user);
 
         String json = """
                 {
@@ -89,14 +83,14 @@ public class CardControllerTest {
                 }
                 """;
 
-        ResultActions result = mockMvc.perform(put("/cards/{id}", card.id())
+        ResultActions result = mockMvc.perform(put("/cards/{id}", card.getId())
                 .header(AUTHORIZATION, "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json));
 
         result
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(card.id()))
+                .andExpect(jsonPath("$.id").value(card.getId().toString()))
                 .andExpect(jsonPath("$.name").value("VisaCardUpdated"))
                 .andExpect(jsonPath("$.brand").value("VISA"))
                 .andExpect(jsonPath("$.registrationDate").isNotEmpty());
@@ -123,7 +117,7 @@ public class CardControllerTest {
         String token = jwtService.generateToken(user); // token owned by "user"
 
         User otherUser = createUser(); // otherUser
-        CardResponseDTO otherUserCard = createCard(otherUser); // card owned by "otherUser"
+        Card otherUserCard = createCard(otherUser); // card owned by "otherUser"
 
         String json = """
                 {
@@ -134,7 +128,7 @@ public class CardControllerTest {
 
         // it should not allow a user to update another user's card
         ResultActions result = mockMvc
-                .perform(put("/cards/{id}", otherUserCard.id()) // pass the card ID of the "otherUser"
+                .perform(put("/cards/{id}", otherUserCard.getId()) // pass the card ID of the "otherUser"
                         .header(AUTHORIZATION, "Bearer " + token) // pass the token of "user"
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
@@ -156,7 +150,7 @@ public class CardControllerTest {
         return userRepository.save(userMapper.toEntity(dto));
     }
 
-    private CardResponseDTO createCard(User user){
+    private Card createCard(User user){
         Card card = new Card(
                 null,
                 "VisaCard",
@@ -165,8 +159,6 @@ public class CardControllerTest {
                 user
         );
 
-        repository.save(card);
-
-        return mapper.toCardResponseDTO(card);
+        return repository.save(card);
     }
 }

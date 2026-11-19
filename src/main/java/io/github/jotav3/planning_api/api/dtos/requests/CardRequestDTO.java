@@ -9,5 +9,5 @@ public record CardRequestDTO(
         String name,
 
         @NotNull(message = "Required field.")
-        CardBrand brand) {
-}
+        CardBrand brand
+) {}

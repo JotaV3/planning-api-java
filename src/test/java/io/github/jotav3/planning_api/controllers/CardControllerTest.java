@@ -1,7 +1,11 @@
 package io.github.jotav3.planning_api.controllers;
 
+import io.github.jotav3.planning_api.api.dtos.requests.UserRequestDTO;
+import io.github.jotav3.planning_api.api.mappers.UserMapper;
+import io.github.jotav3.planning_api.infra.repositories.UserRepository;
 import io.github.jotav3.planning_api.model.entities.Card;
 import io.github.jotav3.planning_api.api.dtos.responses.CardResponseDTO;
+import io.github.jotav3.planning_api.model.entities.User;
 import io.github.jotav3.planning_api.model.entities.enums.CardBrand;
 import io.github.jotav3.planning_api.api.mappers.CardMapper;
 import io.github.jotav3.planning_api.infra.repositories.CardRepository;
@@ -15,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -33,6 +38,12 @@ public class CardControllerTest {
 
     @Autowired
     private CardMapper mapper;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Test
     public void shouldSaveCard() throws Exception{
@@ -80,8 +91,28 @@ public class CardControllerTest {
                 .andExpect(jsonPath("$.registrationDate").isNotEmpty());
     }
 
+    private User createUser(){
+        String login = "MyLogin" + UUID.randomUUID();
+
+        UserRequestDTO dto = new UserRequestDTO(
+                login,
+                "12345678",
+                "UserTest"
+        );
+
+        return userRepository.save(userMapper.toEntity(dto));
+    }
+
     private CardResponseDTO createCard(){
-        Card card = new Card(null, "VisaCard", CardBrand.VISA, LocalDateTime.now());
+        User user = createUser();
+
+        Card card = new Card(
+                null,
+                "VisaCard",
+                CardBrand.VISA,
+                LocalDateTime.now(),
+                user
+        );
 
         repository.save(card);
 

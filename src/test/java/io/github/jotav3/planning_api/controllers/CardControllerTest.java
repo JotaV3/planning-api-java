@@ -2,6 +2,7 @@ package io.github.jotav3.planning_api.controllers;
 
 import io.github.jotav3.planning_api.api.dtos.requests.UserRequestDTO;
 import io.github.jotav3.planning_api.api.mappers.UserMapper;
+import io.github.jotav3.planning_api.application.services.security.JWTService;
 import io.github.jotav3.planning_api.infra.repositories.UserRepository;
 import io.github.jotav3.planning_api.model.entities.Card;
 import io.github.jotav3.planning_api.api.dtos.responses.CardResponseDTO;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,9 +47,13 @@ public class CardControllerTest {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private JWTService jwtService;
+
     @Test
     public void shouldSaveCard() throws Exception{
-        CardResponseDTO dto = createCard();
+        User user = createUser();
+        String token = jwtService.generateToken(user);
 
         String json = """
                 {
@@ -57,6 +63,7 @@ public class CardControllerTest {
                 """;
 
         ResultActions result = mockMvc.perform(post("/cards")
+                .header(AUTHORIZATION, "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json));
 
@@ -70,7 +77,10 @@ public class CardControllerTest {
 
     @Test
     public void shouldUpdateCard() throws Exception{
-        CardResponseDTO card = createCard();
+        User user = createUser();
+        String token = jwtService.generateToken(user);
+
+        CardResponseDTO card = createCard(user);
 
         String json = """
                 {
@@ -80,6 +90,7 @@ public class CardControllerTest {
                 """;
 
         ResultActions result = mockMvc.perform(put("/cards/{id}", card.id())
+                .header(AUTHORIZATION, "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json));
 
@@ -103,9 +114,7 @@ public class CardControllerTest {
         return userRepository.save(userMapper.toEntity(dto));
     }
 
-    private CardResponseDTO createCard(){
-        User user = createUser();
-
+    private CardResponseDTO createCard(User user){
         Card card = new Card(
                 null,
                 "VisaCard",

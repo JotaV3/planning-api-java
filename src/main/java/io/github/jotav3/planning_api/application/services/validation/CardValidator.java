@@ -13,10 +13,11 @@ public class CardValidator {
     @Autowired
     private CardRepository repository;
 
-    public ValidationResult validateName(CardRequestDTO dto, UUID id){
+    public ValidationResult validateName(CardRequestDTO dto, UUID id, UUID userId){
         var result = ValidationResult.newValidationResult();
 
-        boolean isListNotEmpty = !repository.findByNameAndNotId(dto.name(), id).isEmpty();
+        // search duplicated card name from own user ID
+        boolean isListNotEmpty = !repository.findByNameAndNotIdAndUserId(dto.name(), id, userId).isEmpty();
         if(isListNotEmpty){
             result.add(new InvalidField("name", "Already registered."));
         }

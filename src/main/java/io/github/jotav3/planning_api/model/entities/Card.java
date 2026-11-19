@@ -21,15 +21,20 @@ public class Card {
     private CardBrand brand;
     private LocalDateTime registrationDate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Card(){
 
     }
 
-    public Card(UUID id, String name, CardBrand brand, LocalDateTime registrationDate) {
+    public Card(UUID id, String name, CardBrand brand, LocalDateTime registrationDate, User user) {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.registrationDate = registrationDate;
+        this.user = user;
     }
 
     @PrePersist

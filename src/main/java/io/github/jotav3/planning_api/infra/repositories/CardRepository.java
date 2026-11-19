@@ -10,13 +10,27 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CardRepository extends JpaRepository<Card, UUID> {
-    Optional<Card> findByName(String name);
+    @Query("""
+        SELECT c
+        FROM Card c
+        WHERE c.id = :id
+        AND c.user.id = :userId
+    """)
+    Optional<Card> findByIdAndUserId(
+            @Param("id") UUID id,
+            @Param("userId") UUID userId
+    );
 
     @Query("""
         SELECT c
         FROM Card c
         WHERE (:id is null or c.id != :id)
         AND c.name = :name
+        AND c.user.id = :userId
     """)
-    List<Card> findByNameAndNotId(@Param("name") String name, @Param("id") UUID id);
+    List<Card> findByNameAndNotIdAndUserId(
+            @Param("name") String name,
+            @Param("id") UUID id,
+            @Param("userId") UUID userId
+    );
 }

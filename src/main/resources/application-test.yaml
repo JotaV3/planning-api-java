@@ -7,3 +7,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+
+  app:
+    jwt:
+      secret: test-secret-for-local-tests-at-least-32-chars
+      expiration-seconds: 3600

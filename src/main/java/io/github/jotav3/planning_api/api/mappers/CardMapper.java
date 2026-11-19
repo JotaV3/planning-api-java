@@ -6,7 +6,7 @@ import io.github.jotav3.planning_api.api.dtos.responses.CardResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface CardMapper {
     Card toEntity(CardRequestDTO dto);
     CardResponseDTO toCardResponseDTO(Card card);

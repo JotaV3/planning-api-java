@@ -39,6 +39,7 @@ public class CardService {
         }
 
         Card card = mapper.toEntity(dto);
+        card.setUser(getUserByUserId(userId));
         repository.save(card);
 
         return mapper.toCardResponseDTO(card);
